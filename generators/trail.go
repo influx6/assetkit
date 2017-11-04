@@ -59,7 +59,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 
 	publicStandInGen := gen.Block(
 		gen.Package(
-			gen.Name(componentNameLower),
+			gen.Name(targetPkg),
 			gen.SourceText(
 				string(data.Must("bundle.gen")),
 				struct {
@@ -115,7 +115,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 				Path   string
 				JSFile string
 			}{
-				Name:   componentName,
+				Name:   targetPkg,
 				Path:   "public",
 				JSFile: fmt.Sprintf("%s/%s", "js", "main.js"),
 			},
@@ -129,7 +129,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 				Name    string
 				Package string
 			}{
-				Name:    componentName,
+				Name:    targetPkg,
 				Package: componentPackageDir,
 			},
 		),

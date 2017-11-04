@@ -30,8 +30,8 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 
 	var targetPkg string
 
-	if componentNameLower != "" {
-		targetPkg = componentNameLower
+	if componentName != "" {
+		targetPkg = strings.ToLower(componentName)
 	} else {
 		targetPkg = filepath.Base(workDir)
 	}
@@ -57,7 +57,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 
 	pipeGen := gen.Block(
 		gen.Package(
-			gen.Name(componentName),
+			gen.Name(targetPkg),
 			gen.Block(
 				gen.Text("\n"),
 				gen.Text("//go:generate go run generate.go"),
@@ -78,7 +78,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 				Path   string
 				JSFile string
 			}{
-				Name:   componentName,
+				Name:   targetPkg,
 				Path:   "public",
 				JSFile: fmt.Sprintf("%s/%s", "js", "main.js"),
 			},
