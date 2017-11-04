@@ -10,9 +10,9 @@ import (
 	"sync"
 	"text/template"
 
-	"github.com/influx6/trail/generators/data"
 	"github.com/influx6/faux/hexwriter"
 	"github.com/influx6/moz/gen"
+	"github.com/influx6/trail/generators/data"
 )
 
 var (
@@ -161,7 +161,7 @@ func (w *Webpack) Compile(dir string, doGoSources bool) (io.WriterTo, map[string
 
 	content := gen.Block(
 		gen.SourceTextWith(
-			string(data.Must("scaffolds/pack-bundle-src.gen")),
+			string(data.Must("pack-bundle-src.gen")),
 			template.FuncMap{},
 			struct {
 				Dir        string

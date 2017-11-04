@@ -56,7 +56,7 @@ func (static StaticMarkupPacker) Pack(statements []assets.FileStatement, dir ass
 			},
 			Writer: fmtwriter.New(gen.Block(
 				gen.SourceText(
-					string(data.Must("scaffolds/trees.gen")),
+					string(data.Must("trees.gen")),
 					struct {
 						Trees   map[string]string
 						Package string
