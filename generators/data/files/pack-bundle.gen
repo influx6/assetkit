@@ -15,15 +15,17 @@ import (
 	"github.com/influx6/trail/assets/packers"
 	"github.com/influx6/moz/gen"
 	"github.com/BurntSushi/toml"
+
+	{{ .Settings }}
 	"github.com/influx6/trail/common"
 	"github.com/influx6/trail/common/themes/styleguide"
+	{{end}}
 )
 
 var (
 	version   = "0.0.1" // rely on linker -ldflags -X main.version"
 	gitCommit = ""      // rely on linker: -ldflags -X main.gitCommit"
 	getVersion   = *flag.Bool("v", false, "Print version")
-	forceRebuild = *flag.Bool("f", false, "force rebuild")
 )
 
 func main() {
@@ -36,14 +38,18 @@ func main() {
 		return
 	}
 
+	{{if .Settings}}
 	switch flag.Arg(0){
-	case "settings":
-		settingBundle()
 	case "public":
 		publicBundle()
+	case "settings":
+		settingBundle()
 	default:
 		printUsage()
 	}
+	{{else}}
+		publicBundle()
+	{{end}}
 
 	log.Println("Done!")
 }
@@ -65,8 +71,8 @@ func printUsage() {
 
 COMMANDS:
 
-	public							# Generate all asset bundle for ./public files
-	settings			# Generate asset files from settings
+	public						# Generate all asset bundle for ./public files
+	settings					# Generate asset files from settings
 
 FLAGS:
   -v          Print version.
@@ -75,35 +81,15 @@ FLAGS:
 }
 
 func publicBundle(){
-  var config common.Settings
-
-  // Load settings into configuration.
-  if _, err := toml.DecodeFile("./settings.toml", &config); err != nil {
-			log.Fatalf("Failed to decode settings config: %+q", err)
-			return
-  }
-
-  if err := config.Validate(); err != nil {
-			log.Fatalf("Failed to validate settings config: %+q", err)
-			return
-  }
-
   aspacker := assets.New(packers.RawPacker{})
 
-	jspacker := packers.JSPacker{
-      Exceptions: []string{
-        filepath.Join(config.Public.Path,"js", config.Static.JSFileName),
-        filepath.Join(config.Public.Path,"js", config.Static.JSMapFileName),
-      },
-  }
-
-  aspacker.Register(".js", &jspacker)
-  aspacker.Register(".js.map", &jspacker)
+  aspacker.Register(".js", packers.JSPacker{})
+  aspacker.Register(".js.map", packers.JSPacker{})
 
   aspacker.Register(".css", packers.CSSPacker{CleanCSS: true})
   aspacker.Register(".static.html", packers.StaticMarkupPacker{
 		PackageName: {{quote .TargetPackage}},
-		DestinationFile: "{{.TargetDir}}/{{lower .Package}}_static_bundle.go",
+		DestinationFile: "{{.TargetDir}}/static_bundle.go",
 	})
 
 	{{ if notequal .LessFile "" }}
@@ -129,7 +115,7 @@ func publicBundle(){
 			return
 	}
 
-	if err := writeToFile(pipeGen,fmt.Sprintf("%s_bundle.go", {{quote .Package}}),{{ quote .TargetDir}}, currentDir); err != nil {
+	if err := writeToFile(pipeGen,"bundle.go",{{ quote .TargetDir}}, currentDir); err != nil {
 			log.Fatalf("Failed to write file: %+q", err)
 			return
 	}
@@ -150,6 +136,7 @@ func publicBundle(){
   log.Println("Bundling completed for '{{.Package}}'")
 }
 
+{{if .Settings }}
 func settingBundle(){
 	settings, err := getSettings()
 	if err != nil {
@@ -186,6 +173,22 @@ func settingBundle(){
 	log.Println("Done generating assets from settings.tml")
 }
 
+func getSettings() (common.Settings, error) {
+  var config common.Settings
+
+  // Load settings into configuration.
+  if _, err := toml.DecodeFile("./settings.toml", &config); err != nil {
+    return config, err
+  }
+
+	if err := config.Validate(); err != nil {
+    return config, err
+	}
+
+  return config, nil
+}
+{{end}}
+
 // writeToFile writes the giving content from the WriterTo instance to the file of
 // the giving file.
 func writeToFile(w io.WriterTo, fileName string, dirName string, currentDir string) error {
@@ -215,19 +218,4 @@ func writeToFile(w io.WriterTo, fileName string, dirName string, currentDir stri
 
 	fmt.Printf("- Created directory file: %q\n", filepath.Join(dirName, fileName))
 	return nil
-}
-
-func getSettings() (common.Settings, error) {
-  var config common.Settings
-
-  // Load settings into configuration.
-  if _, err := toml.DecodeFile("./settings.toml", &config); err != nil {
-    return config, err
-  }
-
-	if err := config.Validate(); err != nil {
-    return config, err
-	}
-
-  return config, nil
 }

@@ -31,13 +31,45 @@ func main() {
 		return
 	}
 
-	name := flag.Arg(0)
+	command := flag.Arg(0)
+	name := flag.Arg(1)
+
 	currentDir, err := os.Getwd()
 	if err != nil {
 		log.Fatalf("Failed to get directory path: %+q", err)
 		return
 	}
 
+	switch command {
+	case "public":
+		generatePublic(currentDir, name)
+	case "view":
+		generateView(currentDir, name)
+	default:
+		printUsage()
+	}
+
+	log.Println("Trail asset bundling ready!")
+}
+
+func generateView(currentDir, name string) {
+	commands, err := generators.TrailView(
+		ast.AnnotationDeclaration{Arguments: []string{name}},
+		ast.PackageDeclaration{FilePath: currentDir},
+		ast.Package{},
+	)
+	if err != nil {
+		log.Fatalf("Failed to generate trail directives: %+q", err)
+		return
+	}
+
+	if err := ast.SimpleWriteDirectives("", forceRebuild, commands...); err != nil {
+		log.Fatalf("Failed to create package directories: %+q", err)
+		return
+	}
+}
+
+func generatePublic(currentDir, name string) {
 	commands, err := generators.TrailPackages(
 		ast.AnnotationDeclaration{Arguments: []string{name}},
 		ast.PackageDeclaration{FilePath: currentDir},
@@ -52,8 +84,6 @@ func main() {
 		log.Fatalf("Failed to create package directories: %+q", err)
 		return
 	}
-
-	log.Println("Trail asset bundling ready!")
 }
 
 // printVersion prints corresponding build getVersion with associated build stamp and git commit if provided.
@@ -72,13 +102,24 @@ func printUsage() {
 	fmt.Fprintf(os.Stdout, `Usage: trail [options]
 Trail creates a package for package of web assets using it's internal bundlers.
 
+COMMANDS:
+
+	trail view [optional-name]			# Creates a generate.go file for directory.
+	trail public [optional-name]		# Creates a complete package for asset bundling.
+
+Where:
+
+	[optional-name] defines the name for the directory to be used
+	for the assets if provided, else having files created within
+	working directory.
+
 EXAMPLES:
 
-	trail static-data
+	trail view home
+	trail public static-data
 
 FLAGS:
-  -v          Print version.
+	-v          Print version.
 	-f 					Force re-generation of all files
-
 `)
 }

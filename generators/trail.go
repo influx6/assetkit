@@ -74,9 +74,11 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 				Package       string
 				TargetDir     string
 				TargetPackage string
+				Settings      bool
 			}{
-				TargetDir:     "public",
-				TargetPackage: "public",
+				TargetDir:     "./",
+				TargetPackage: "",
+				Settings:      true,
 				Name:          componentName,
 				Package:       componentNameLower,
 				LessFile:      fmt.Sprintf("less/%s.less", componentNameLower),
@@ -107,7 +109,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			}{
 				Name:   componentName,
 				Path:   "public",
-				JSFile: fmt.Sprintf("%s/%s", "public/js", "main.js"),
+				JSFile: fmt.Sprintf("%s/%s", "js", "main.js"),
 			},
 		),
 	)
@@ -137,44 +139,35 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		},
 		{
 			DontOverride: false,
-			Dir:          filepath.Join(componentNameLower, "views"),
-		},
-		{
-			DontOverride: false,
 			Writer:       htmlGen,
 			FileName:     "index.html",
-			Dir:          filepath.Join(componentNameLower, "views/home"),
-		},
-		{
-			DontOverride: false,
-			Dir:          filepath.Join(componentNameLower, "public"),
 		},
 		{
 			DontOverride: false,
 			FileName:     "main.js",
-			Dir:          filepath.Join(componentNameLower, "public/js"),
+			Dir:          filepath.Join(componentNameLower, "js"),
 			Writer:       bytes.NewBufferString("//strictmode"),
 		},
 		{
 			DontOverride: false,
-			Dir:          filepath.Join(componentNameLower, "public/css"),
+			Dir:          filepath.Join(componentNameLower, "css"),
 			FileName:     "normalize.css",
 			Writer:       bytes.NewBuffer(gridNormCSS),
 		},
 		{
 			DontOverride: false,
-			Dir:          filepath.Join(componentNameLower, "public/css"),
+			Dir:          filepath.Join(componentNameLower, "css"),
 			FileName:     "grid.css",
 			Writer:       bytes.NewBuffer(gridCSSData),
 		},
 		{
 			DontOverride: false,
-			Dir:          filepath.Join(componentNameLower, "public/less"),
+			Dir:          filepath.Join(componentNameLower, "less"),
 		},
 		{
 			DontOverride: false,
 			Writer:       lessGen,
-			Dir:          filepath.Join(componentNameLower, "public/less"),
+			Dir:          filepath.Join(componentNameLower, "less"),
 			FileName:     fmt.Sprintf("%s.less", lessName),
 		},
 		{
@@ -186,13 +179,13 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		{
 			DontOverride: true,
 			Dir:          componentNameLower,
-			FileName:     "public.go",
+			FileName:     "generate.go",
 			Writer:       fmtwriter.New(publicGen, true, true),
 		},
 		{
 			DontOverride: true,
-			Dir:          filepath.Join(componentNameLower, "public"),
-			FileName:     fmt.Sprintf("%s_bundle.go", componentNameLower),
+			Dir:          componentNameLower,
+			FileName:     "bundle.go",
 			Writer:       fmtwriter.New(publicStandInGen, true, true),
 		},
 	}
