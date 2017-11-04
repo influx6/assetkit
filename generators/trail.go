@@ -138,7 +138,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		),
 	)
 
-	return []gen.WriteDirective{
+	commands := []gen.WriteDirective{
 		{
 			DontOverride: false,
 			Dir:          componentNameLower,
@@ -209,7 +209,9 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			FileName:     fmt.Sprintf("%s_bundle.go", componentNameLower),
 			Writer:       fmtwriter.New(publicStandInGen, true, true),
 		},
-	}, nil
+	}
+
+	return commands, nil
 }
 
 func validateName(val string) bool {
