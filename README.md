@@ -37,7 +37,7 @@ EXAMPLES:
 
 
 FLAGS:
-  -v          Print version.
+	-v          Print version.
 	-f 					Force re-generation of all files
 
 ```
