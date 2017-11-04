@@ -67,7 +67,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 
 	publicGen := gen.Block(
 		gen.SourceText(
-			string(data.Must("pack-bundle-public.gen")),
+			string(data.Must("pack-bundle.gen")),
 			struct {
 				Name          string
 				LessFile      string

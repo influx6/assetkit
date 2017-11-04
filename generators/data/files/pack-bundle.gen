@@ -73,9 +73,29 @@ FLAGS:
 }
 
 func publicBundle(){
+  var config common.Settings
+
+  // Load settings into configuration.
+  if _, err := toml.DecodeFile("./settings.toml", &config); err != nil {
+    panic(err)
+  }
+
+  if err := config.Validate(); err != nil {
+    panic(err)
+  }
+
   aspacker := assets.New(packers.RawPacker{})
 
-  aspacker.Register(".js", packers.JSPacker{})
+	jspacker := packers.JSPacker{
+      Exceptions: []string{
+        filepath.Join(config.Public.Path,"js", config.Static.JSFileName),
+        filepath.Join(config.Public.Path,"js", config.Static.JSMapFileName),
+      },
+  }
+
+  aspacker.Register(".js", &jspacker)
+  aspacker.Register(".js.map", &jspacker)
+
   aspacker.Register(".css", packers.CSSPacker{CleanCSS: true})
   aspacker.Register(".static.html", packers.StaticMarkupPacker{
 		PackageName: {{quote .TargetPackage}},
@@ -123,32 +143,36 @@ func publicBundle(){
 }
 
 func settingBundle(){
-  settings, err := getSettings()
-  if err != nil {
-    panic(err)
-  }
+	settings, err := getSettings()
+	if err != nil {
+		log.Fatalf("Failed to retreive settings: %+q", err)
+	}
 
-  var theme bytes.Buffer
-  if err := styleguide.Render(&theme, settings.Theme); err != nil {
-    panic(err)
-  }
+	var theme bytes.Buffer
+	if err = styleguide.Render(&theme, settings.Theme); err != nil {
+		log.Fatalf("Failed to render style guide into css: %+q", err)
+		return
+	}
 
-  cssPublicDir := filepath.Join(settings.Public.Path, "css")
-  cssPublic := filepath.Join(settings.Public.Path, "css/theme.css")
+	cssPublicDir := filepath.Join(settings.Public.Path, "css")
+	cssPublic := filepath.Join(settings.Public.Path, "css/theme.css")
 
-	if err := os.MkdirAll(cssPublicDir, 0777); err != nil && err != os.ErrExist {
-		panic(err)
+	if err = os.MkdirAll(cssPublicDir, 0777); err != nil && err != os.ErrExist {
+		log.Fatalf("Failed to create css directory: %+q", err)
+		return
 	}
 
   themeFile, err := os.Create(cssPublic)
   if err != nil {
-    panic(err)
+		log.Fatalf("Failed to create css file: %+q", err)
+		return
   }
 
   defer themeFile.Close()
 
   if _, err := theme.WriteTo(themeFile); err != nil {
-    panic(err)
+		log.Fatalf("Failed to write to css file: %+q", err)
+		return
   }
 }
 
