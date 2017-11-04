@@ -16,7 +16,7 @@ import (
 	"github.com/influx6/moz/gen"
 	"github.com/BurntSushi/toml"
 
-	{{ .Settings }}
+	{{if .Settings }}
 	"github.com/influx6/trail/common"
 	"github.com/influx6/trail/common/themes/styleguide"
 	{{end}}
