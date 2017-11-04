@@ -141,6 +141,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			DontOverride: false,
 			Writer:       htmlGen,
 			FileName:     "index.html",
+			Dir:          componentNameLower,
 		},
 		{
 			DontOverride: false,

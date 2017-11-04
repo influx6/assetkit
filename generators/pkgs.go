@@ -2,6 +2,7 @@ package generators
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/influx6/faux/fmtwriter"
@@ -54,15 +55,36 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 		),
 	)
 
+	htmlGen := gen.Block(
+		gen.SourceText(
+			string(data.Must("base.html.gen")),
+			struct {
+				Name   string
+				Path   string
+				JSFile string
+			}{
+				Name:   componentName,
+				Path:   "public",
+				JSFile: fmt.Sprintf("%s/%s", "js", "main.js"),
+			},
+		),
+	)
+
 	return []gen.WriteDirective{
 		{
-			DontOverride: true,
+			DontOverride: false,
 			FileName:     "bundle.go",
 			Dir:          componentNameLower,
 			Writer:       fmtwriter.New(pipeGen, true, true),
 		},
 		{
-			DontOverride: true,
+			DontOverride: false,
+			Writer:       htmlGen,
+			FileName:     "index.html",
+			Dir:          componentNameLower,
+		},
+		{
+			DontOverride: false,
 			FileName:     "generate.go",
 			Dir:          componentNameLower,
 			Writer:       fmtwriter.New(generatorGen, true, true),
