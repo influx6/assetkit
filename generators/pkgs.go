@@ -95,8 +95,8 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 		{
 			DontOverride: false,
 			Writer:       htmlGen,
-			FileName:     "index.html",
 			Dir:          componentNameLower,
+			FileName:     fmt.Sprintf("%s.html", targetPkg),
 		},
 		{
 			DontOverride: false,
