@@ -49,17 +49,6 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 	componentNameLower := strings.ToLower(componentName)
 	componentPackageDir := filepath.Join(packageDir, componentNameLower)
 
-	typeGen := gen.Block(
-		gen.SourceText(
-			string(data.Must("base.gen")),
-			struct {
-				Name string
-			}{
-				Name: componentName,
-			},
-		),
-	)
-
 	publicStandInGen := gen.Block(
 		gen.Package(
 			gen.Name(componentNameLower),
@@ -209,12 +198,6 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			Dir:          filepath.Join(componentNameLower, "public"),
 			FileName:     fmt.Sprintf("%s_bundle.go", componentNameLower),
 			Writer:       fmtwriter.New(publicStandInGen, true, true),
-		},
-		{
-			DontOverride: true,
-			Dir:          componentNameLower,
-			FileName:     fmt.Sprintf("%s.go", componentNameLower),
-			Writer:       fmtwriter.New(typeGen, true, true),
 		},
 	}, nil
 }

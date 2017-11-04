@@ -31,7 +31,6 @@ func main() {
 	}
 
 	name := flag.Arg(0)
-
 	currentDir, err := os.Getwd()
 	if err != nil {
 		log.Fatalf("Failed to get directory path: %+q", err)
