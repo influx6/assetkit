@@ -17,7 +17,6 @@ var (
 )
 
 var (
-	getName    = *flag.String("name", "staticdata", "Set name of package to be generated")
 	getVersion = *flag.Bool("v", false, "Print version")
 )
 
@@ -31,6 +30,8 @@ func main() {
 		return
 	}
 
+	name := flag.Arg(0)
+
 	currentDir, err := os.Getwd()
 	if err != nil {
 		log.Fatalf("Failed to get directory path: %+q", err)
@@ -42,8 +43,12 @@ func main() {
 		ast.PackageDeclaration{FilePath: currentDir},
 		ast.Package{},
 	)
+	if err != nil {
+		log.Fatalf("Failed to generate trail directives: %+q", err)
+		return
+	}
 
-	if err := ast.SimpleWriteDirectives("./", true, commands...); err != nil {
+	if err := ast.SimpleWriteDirectives(name, true, commands...); err != nil {
 		log.Fatalf("Failed to create package directories: %+q", err)
 		return
 	}
@@ -69,7 +74,7 @@ Trail creates a package for package of web assets using it's internal bundlers.
 
 EXAMPLES:
 
-	trail
+	trail static-data
 
 FLAGS:
 

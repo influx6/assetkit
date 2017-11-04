@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/influx6/faux/fmtwriter"
@@ -20,6 +21,8 @@ import (
 var (
 	inGOPATH    = os.Getenv("GOPATH")
 	inGOPATHSrc = filepath.Join(inGOPATH, "src")
+	badSymbols  = regexp.MustCompile(`[(|\-|_|\W|\d)+]`)
+	notAllowed  = regexp.MustCompile(`[^(_|\w|\d)+]`)
 )
 
 // TrailPackages returns a slice of WriteDirectives which contain data to be written to disk to create
@@ -42,7 +45,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		fmt.Printf("Failed to retrieve package directory path in go src: %+q\n", err)
 	}
 
-	componentName := an.Arguments[0]
+	componentName := badSymbols.ReplaceAllString(an.Arguments[0], "")
 	componentNameLower := strings.ToLower(componentName)
 
 	componentPackageDir := filepath.Join(packageDir, componentNameLower)
@@ -215,4 +218,8 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			Writer:       fmtwriter.New(typeGen, true, true),
 		},
 	}, nil
+}
+
+func validateName(val string) bool {
+	return notAllowed.MatchString(val)
 }
