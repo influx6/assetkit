@@ -145,13 +145,23 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		},
 		{
 			DontOverride: false,
+			Dir:          filepath.Join(componentNameLower, "views"),
+		},
+		{
+			DontOverride: false,
 			Writer:       htmlGen,
 			FileName:     "index.html",
-			Dir:          componentNameLower,
+			Dir:          filepath.Join(componentNameLower, "views/home"),
 		},
 		{
 			DontOverride: false,
 			Dir:          filepath.Join(componentNameLower, "public"),
+		},
+		{
+			DontOverride: false,
+			FileName:     "main.js",
+			Dir:          filepath.Join(componentNameLower, "public/js"),
+			Writer:       bytes.NewBufferString("//strictmode"),
 		},
 		{
 			DontOverride: false,
