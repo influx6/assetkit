@@ -1,0 +1,10 @@
+/*
+  This is done to simplify and streamline your development experience.
+
+  This stands as the central less file where all other styles should be imported into,
+  as this will be used to generate a final {{.Name}}.less file for your project.
+
+  Note: Using this less setup is optional and if you remove this then ensure to remove
+  the "MainFile" value set for the LessPacker in the public_bundle.go file.
+  
+*/
