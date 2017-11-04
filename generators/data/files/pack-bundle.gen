@@ -41,6 +41,8 @@ func main() {
 		settingBundle()
 	case "public":
 		publicBundle()
+	default:
+		printUsage()
 	}
 
 	log.Println("Done!")
@@ -59,12 +61,12 @@ func printVersion() {
 
 // printUsage prints out usage message for CLI tool.
 func printUsage() {
-	fmt.Fprintf(os.Stdout, `Usage: bundle [command]
+	fmt.Fprintf(os.Stdout, `Usage: go run [file.gp] [command]
 
-EXAMPLES:
+COMMANDS:
 
-	bundle public
-	bundle settings
+	public							# Generate all asset bundle for ./public files
+	settings			# Generate asset files from settings
 
 FLAGS:
   -v          Print version.
@@ -77,11 +79,13 @@ func publicBundle(){
 
   // Load settings into configuration.
   if _, err := toml.DecodeFile("./settings.toml", &config); err != nil {
-    panic(err)
+			log.Fatalf("Failed to decode settings config: %+q", err)
+			return
   }
 
   if err := config.Validate(); err != nil {
-    panic(err)
+			log.Fatalf("Failed to validate settings config: %+q", err)
+			return
   }
 
   aspacker := assets.New(packers.RawPacker{})
@@ -108,7 +112,8 @@ func publicBundle(){
 
   writer, statics, err := aspacker.Compile({{quote .TargetDir}}, false)
   if err != nil {
-    panic(err)
+			log.Fatalf("Failed to get compile asset list: %+q", err)
+			return
   }
 
 	pipeGen := gen.Block(
@@ -120,11 +125,13 @@ func publicBundle(){
 
 	currentDir, err := os.Getwd()
 	if err != nil {
-    panic(err)
+			log.Fatalf("Failed to get current directory: %+q", err)
+			return
 	}
 
 	if err := writeToFile(pipeGen,fmt.Sprintf("%s_bundle.go", {{quote .Package}}),{{ quote .TargetDir}}, currentDir); err != nil {
-    panic(err)
+			log.Fatalf("Failed to write file: %+q", err)
+			return
 	}
 
 	for _, directives := range statics {
@@ -134,12 +141,13 @@ func publicBundle(){
 			}
 
 			if err := writeToFile(directive.Writer, directive.Static.FileName, directive.Static.DirName, currentDir); err != nil {
-				panic(err)
+				log.Fatalf("Failed to write file: %+q", err)
+				return
 			}
 		}
 	}
 
-  fmt.Println("Bundling completed for '{{.Package}}'")
+  log.Println("Bundling completed for '{{.Package}}'")
 }
 
 func settingBundle(){
@@ -174,6 +182,8 @@ func settingBundle(){
 		log.Fatalf("Failed to write to css file: %+q", err)
 		return
   }
+
+	log.Println("Done generating assets from settings.tml")
 }
 
 // writeToFile writes the giving content from the WriterTo instance to the file of
