@@ -1,17 +1,78 @@
-//+build ignore
+// +build ignore
 
 package main
 
 import (
 	"fmt"
 	"os"
+	"bytes"
+	"path/filepath"
+	"flag"
+	"log"
+	"strings"
 
 	"github.com/influx6/trail/assets"
 	"github.com/influx6/trail/assets/packers"
 	"github.com/influx6/moz/gen"
+	"github.com/BurntSushi/toml"
+	"github.com/influx6/trail/common"
+	"github.com/influx6/trail/common/themes/styleguide"
 )
 
-func main(){
+var (
+	version   = "0.0.1" // rely on linker -ldflags -X main.version"
+	gitCommit = ""      // rely on linker: -ldflags -X main.gitCommit"
+	getVersion   = *flag.Bool("v", false, "Print version")
+	forceRebuild = *flag.Bool("f", false, "force rebuild")
+)
+
+func main() {
+	flag.Usage = printUsage
+	flag.Parse()
+
+	// if we are to print getVersion.
+	if getVersion {
+		printVersion()
+		return
+	}
+
+	switch flag.Arg(0){
+	case "settings":
+		settingBundle()
+	case "public":
+		publicBundle()
+	}
+
+	log.Println("Done!")
+}
+
+// printVersion prints corresponding build getVersion with associated build stamp and git commit if provided.
+func printVersion() {
+	fragments := []string{version}
+
+	if gitCommit != "" {
+		fragments = append(fragments, fmt.Sprintf("git#%s", gitCommit))
+	}
+
+	fmt.Fprint(os.Stdout, strings.Join(fragments, " "))
+}
+
+// printUsage prints out usage message for CLI tool.
+func printUsage() {
+	fmt.Fprintf(os.Stdout, `Usage: bundle [command]
+
+EXAMPLES:
+
+	bundle public
+	bundle settings
+
+FLAGS:
+  -v          Print version.
+
+`)
+}
+
+func publicBundle(){
   aspacker := assets.New(packers.RawPacker{})
 
   aspacker.Register(".js", packers.JSPacker{})
@@ -61,6 +122,36 @@ func main(){
   fmt.Println("Bundling completed for '{{.Package}}'")
 }
 
+func settingBundle(){
+  settings, err := getSettings()
+  if err != nil {
+    panic(err)
+  }
+
+  var theme bytes.Buffer
+  if err := styleguide.Render(&theme, settings.Theme); err != nil {
+    panic(err)
+  }
+
+  cssPublicDir := filepath.Join(settings.Public.Path, "css")
+  cssPublic := filepath.Join(settings.Public.Path, "css/theme.css")
+
+	if err := os.MkdirAll(cssPublicDir, 0777); err != nil && err != os.ErrExist {
+		panic(err)
+	}
+
+  themeFile, err := os.Create(cssPublic)
+  if err != nil {
+    panic(err)
+  }
+
+  defer themeFile.Close()
+
+  if _, err := theme.WriteTo(themeFile); err != nil {
+    panic(err)
+  }
+}
+
 // writeToFile writes the giving content from the WriterTo instance to the file of
 // the giving file.
 func writeToFile(w io.WriterTo, fileName string, dirName string, currentDir string) error {
@@ -90,4 +181,19 @@ func writeToFile(w io.WriterTo, fileName string, dirName string, currentDir stri
 
 	fmt.Printf("- Created directory file: %q\n", filepath.Join(dirName, fileName))
 	return nil
+}
+
+func getSettings() (common.Settings, error) {
+  var config common.Settings
+
+  // Load settings into configuration.
+  if _, err := toml.DecodeFile("./settings.toml", &config); err != nil {
+    return config, err
+  }
+
+	if err := config.Validate(); err != nil {
+    return config, err
+	}
+
+  return config, nil
 }

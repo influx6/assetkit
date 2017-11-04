@@ -84,19 +84,6 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		),
 	)
 
-	settingsGen := gen.Block(
-		gen.SourceText(
-			string(data.Must("settings.gen")),
-			struct {
-				Name    string
-				Package string
-			}{
-				Name:    componentName,
-				Package: componentNameLower,
-			},
-		),
-	)
-
 	lessGen := gen.Block(
 		gen.SourceText(
 			string(data.Must("main.less.gen")),
@@ -197,15 +184,9 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			FileName:     "settings.toml",
 		},
 		{
-			DontOverride: false,
-			Dir:          componentNameLower,
-			FileName:     "settings_bundle.go",
-			Writer:       fmtwriter.New(settingsGen, true, true),
-		},
-		{
 			DontOverride: true,
 			Dir:          componentNameLower,
-			FileName:     "public_bundle.go",
+			FileName:     "public.go",
 			Writer:       fmtwriter.New(publicGen, true, true),
 		},
 		{
