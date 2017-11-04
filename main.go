@@ -52,7 +52,7 @@ func main() {
 		return
 	}
 
-	if err := ast.SimpleWriteDirectives(name, true, commands...); err != nil {
+	if err := ast.SimpleWriteDirectives("", true, commands...); err != nil {
 		log.Fatalf("Failed to create package directories: %+q", err)
 		return
 	}
