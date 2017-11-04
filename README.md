@@ -22,8 +22,8 @@ Trail creates a package for package of web assets using its internal bundlers.
 
 COMMANDS:
 
-	trail view [optional-name]					# Creates a generate.go file which bundles all assets in create directory.
-	trail public [optional-name]				# Creates a complete package and content for asset bundling all static files
+	trail view [optional-name]	# Creates a generate.go file which bundles all assets in create directory.
+	trail public [optional-name]	# Creates a complete package and content for asset bundling all static files
 
 where:
 
@@ -32,14 +32,13 @@ where:
 
 EXAMPLES:
 
-	trail view home									# Creates a generate.go file which bundles all assets in create directory.
-	trail public static-data				# Creates a complete package and content for asset bundling all static files
+	trail view home			# Creates a generate.go file which bundles all assets in create directory.
+	trail public static-data	# Creates a complete package and content for asset bundling all static files
 
 
 FLAGS:
-	-v          Print version.
-	-f 					Force re-generation of all files
-
+	-v      Print version.
+	-f 	Force re-generation of all files
 ```
 
 
