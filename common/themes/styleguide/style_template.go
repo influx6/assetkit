@@ -69,7 +69,7 @@ a, a:hover, a:active, a:visited{
 
 /*
 ____________ Line height  classes ____________________________
-	Line height defines giving sets of the first capital length hight 
+	Line height defines giving sets of the first capital length hight
 	suggestable for styles
 
 	In typography, cap height refers to the height of a capital letter above the baseline for a particular typeface.
@@ -92,7 +92,7 @@ ____________ Line height  classes ____________________________
 
 /*
 ____________ Cap height  classes ____________________________
-	Cap height defines giving sets of the first capital length hight 
+	Cap height defines giving sets of the first capital length hight
 	suggestable for styles
 
 	In typography, cap height refers to the height of a capital letter above the baseline for a particular typeface.
@@ -104,7 +104,7 @@ ____________ Cap height  classes ____________________________
 
 /*
 ____________ Line height  classes ____________________________
- Letter spacing class go from highest to lowest where the highest is in positive 
+ Letter spacing class go from highest to lowest where the highest is in positive
    spacing value and the last in negative spacing values.
 */
 
@@ -127,7 +127,7 @@ ____________ Line height  classes ____________________________
 /*
 ____________ Base border radius classes ____________________________
 
-  These are classes for different border radius effect chosen specifically for 
+  These are classes for different border radius effect chosen specifically for
   use with different components.
 
   .smallRadius: For basic border radius for small elements eg radio, checkboxes.
@@ -167,12 +167,12 @@ ____________ Base border radius classes ____________________________
 /*
 ____________ Base shadowdrop classes ____________________________
 
-  These are classes for different shadow effect chosen specifically for 
+  These are classes for different shadow effect chosen specifically for
   use with different components.
 
   .shadow: For basic shadows for normal elements.
   .shadow__drop: For shadow effects for dropdown/popovers type elements.
-  .shadow__hover: For shadow effects for hovers. 
+  .shadow__hover: For shadow effects for hovers.
   .shadow__elevanted: For shadow effects for elevated modals, cards, etc
 
   shadow-key-umbra-opacity: 0.2 !default;
@@ -269,7 +269,7 @@ ____________ Base shadowdrop classes ____________________________
 ____________ Base font size classes ____________________________
 
   These are classes provide a simple set of font-scale font-size
-  which allow you to use for scaling based on an initial font-size 
+  which allow you to use for scaling based on an initial font-size
   set on a parent, they should scale well.
 
   font-size-sm: Defines font size for reducing sizes
@@ -491,7 +491,7 @@ ____________ Font scale set ____________________________
 /*
 ____________ Color set ____________________________
 
-  These are classes provide a color set based on specific brand colors 
+  These are classes provide a color set based on specific brand colors
   provided, these allows us to easily generate color, background and border-color
   classes suited to provide a consistent color design for use in project.
 
@@ -508,10 +508,10 @@ ____________ Color set ____________________________
   base: The original color without any modification.
 
   Other color tones are graded from 10...nth where n is a multiple of 10 * index.
-  The lowest grade of 10 is where the color is close to it's darkest version while 
+  The lowest grade of 10 is where the color is close to it's darkest version while
   the highest means a continous increase in luminousity.
 
-  We further generate classes for Color, Border-Color and Background based on the division and 
+  We further generate classes for Color, Border-Color and Background based on the division and
   subdivision.
 
 */
@@ -725,4 +725,5 @@ ____________ Color set ____________________________
 
 /*______________________________________________________________________
 
-*/`
+*/
+`
