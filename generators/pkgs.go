@@ -22,7 +22,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 
 	generatorGen := gen.Block(
 		gen.SourceText(
-			string(data.Must("scaffolds/pack-bundle.gen")),
+			string(data.Must("pack-bundle.gen")),
 			struct {
 				Name          string
 				LessFile      string
@@ -47,7 +47,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 				gen.Text("//go:generate go run generate.go"),
 				gen.Text("\n"),
 				gen.SourceText(
-					string(data.Must("scaffolds/bundle.gen")),
+					string(data.Must("bundle.gen")),
 					nil,
 				),
 			),
