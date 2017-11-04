@@ -136,6 +136,19 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		),
 	)
 
+	docGen := gen.Block(
+		gen.Package(
+			gen.Name(componentNameLower),
+			gen.Block(
+				gen.Text("\n"),
+				gen.Text("//go:generate go run generate.go settings"),
+				gen.Text("\n"),
+				gen.Text("//go:generate go run generate.go public"),
+				gen.Text("\n"),
+			),
+		),
+	)
+
 	lessName := "index"
 	if componentName != "" {
 		lessName = componentNameLower
@@ -150,6 +163,12 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			DontOverride: false,
 			Writer:       htmlGen,
 			FileName:     "index.html",
+			Dir:          targetDir,
+		},
+		{
+			DontOverride: false,
+			Writer:       docGen,
+			FileName:     "doc.go",
 			Dir:          targetDir,
 		},
 		{
