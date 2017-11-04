@@ -100,26 +100,26 @@ func printVersion() {
 // printUsage prints out usage message for CLI tool.
 func printUsage() {
 	fmt.Fprintf(os.Stdout, `Usage: trail [options]
-Trail creates a package for package of web assets using it's internal bundlers.
+		Trail creates a package for package of web assets using its internal bundlers.
 
-COMMANDS:
+		COMMANDS:
 
-	trail view [optional-name]			# Creates a generate.go file for directory.
-	trail public [optional-name]		# Creates a complete package for asset bundling.
+			trail view [optional-name]	# Creates a generate.go file which bundles all assets in create directory.
+			trail public [optional-name]	# Creates a complete package and content for asset bundling all static files
 
-Where:
+		where:
 
-	[optional-name] defines the name for the directory to be used
-	for the assets if provided, else having files created within
-	working directory.
+			[optional-name] defines the name for the directory to be used for the assets if provided, else
+			having files created within working directory.
 
-EXAMPLES:
+		EXAMPLES:
 
-	trail view home
-	trail public static-data
+			trail view home			# Creates a generate.go file which bundles all assets in create directory.
+			trail public static-data	# Creates a complete package and content for asset bundling all static files
 
-FLAGS:
-	-v          Print version.
-	-f 					Force re-generation of all files
+
+		FLAGS:
+			-v      Print version.
+			-f 	Force re-generation of all files
 `)
 }
