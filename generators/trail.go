@@ -138,6 +138,11 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		),
 	)
 
+	lessName := "index"
+	if componentName != "" {
+		lessName = componentNameLower
+	}
+
 	commands := []gen.WriteDirective{
 		{
 			DontOverride: false,
@@ -183,7 +188,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			DontOverride: false,
 			Writer:       lessGen,
 			Dir:          filepath.Join(componentNameLower, "public/less"),
-			FileName:     fmt.Sprintf("%s.less", componentNameLower),
+			FileName:     fmt.Sprintf("%s.less", lessName),
 		},
 		{
 			DontOverride: true,
