@@ -47,12 +47,11 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 
 	componentName := badSymbols.ReplaceAllString(an.Arguments[0], "")
 	componentNameLower := strings.ToLower(componentName)
-
 	componentPackageDir := filepath.Join(packageDir, componentNameLower)
 
 	typeGen := gen.Block(
 		gen.SourceText(
-			string(data.Must("scaffolds/base.gen")),
+			string(data.Must("base.gen")),
 			struct {
 				Name string
 			}{
@@ -65,7 +64,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		gen.Package(
 			gen.Name(componentNameLower),
 			gen.SourceText(
-				string(data.Must("scaffolds/bundle.gen")),
+				string(data.Must("bundle.gen")),
 				struct {
 					Name    string
 					Package string
@@ -79,7 +78,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 
 	publicGen := gen.Block(
 		gen.SourceText(
-			string(data.Must("scaffolds/pack-bundle-public.gen")),
+			string(data.Must("pack-bundle-public.gen")),
 			struct {
 				Name          string
 				LessFile      string
@@ -98,7 +97,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 
 	settingsGen := gen.Block(
 		gen.SourceText(
-			string(data.Must("scaffolds/settings.gen")),
+			string(data.Must("settings.gen")),
 			struct {
 				Name    string
 				Package string
@@ -111,7 +110,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 
 	lessGen := gen.Block(
 		gen.SourceText(
-			string(data.Must("scaffolds/main.less.gen")),
+			string(data.Must("main.less.gen")),
 			struct {
 				Name    string
 				Package string
@@ -124,7 +123,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 
 	htmlGen := gen.Block(
 		gen.SourceText(
-			string(data.Must("scaffolds/base.html.gen")),
+			string(data.Must("base.html.gen")),
 			struct {
 				Name   string
 				Path   string
@@ -139,7 +138,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 
 	tomlGen := gen.Block(
 		gen.SourceText(
-			string(data.Must("scaffolds/settings.toml.gen")),
+			string(data.Must("settings.toml.gen")),
 			struct {
 				Name    string
 				Package string
