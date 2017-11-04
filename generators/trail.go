@@ -49,6 +49,14 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 	componentNameLower := strings.ToLower(componentName)
 	componentPackageDir := filepath.Join(packageDir, componentNameLower)
 
+	var targetPkg string
+
+	if componentNameLower != "" {
+		targetPkg = componentNameLower
+	} else {
+		targetPkg = filepath.Base(workDir)
+	}
+
 	publicStandInGen := gen.Block(
 		gen.Package(
 			gen.Name(componentNameLower),
@@ -77,7 +85,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 				Settings      bool
 			}{
 				TargetDir:     "./",
-				TargetPackage: "",
+				TargetPackage: targetPkg,
 				Settings:      true,
 				Name:          componentName,
 				Package:       componentNameLower,

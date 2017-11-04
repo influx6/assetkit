@@ -3,6 +3,8 @@ package generators
 import (
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/influx6/faux/fmtwriter"
@@ -18,8 +20,21 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 		return nil, errors.New("Expected atleast one argument for annotation as component name")
 	}
 
+	workDir, err := os.Getwd()
+	if err != nil {
+		return nil, fmt.Errorf("Failed to retrieve current directory path: %+q", err)
+	}
+
 	componentName := badSymbols.ReplaceAllString(an.Arguments[0], "")
 	componentNameLower := strings.ToLower(componentName)
+
+	var targetPkg string
+
+	if componentNameLower != "" {
+		targetPkg = componentNameLower
+	} else {
+		targetPkg = filepath.Base(workDir)
+	}
 
 	generatorGen := gen.Block(
 		gen.SourceText(
@@ -33,9 +48,9 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 				Settings      bool
 			}{
 				TargetDir:     "./",
+				TargetPackage: targetPkg,
 				Name:          componentName,
 				Package:       componentNameLower,
-				TargetPackage: componentNameLower,
 			},
 		),
 	)
