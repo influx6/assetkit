@@ -46,20 +46,21 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 	}
 
 	componentName := badSymbols.ReplaceAllString(an.Arguments[0], "")
-	componentNameLower := strings.ToLower(componentName)
-	componentPackageDir := filepath.Join(packageDir, componentNameLower)
 
-	var targetPkg string
+	var targetDir string
 
-	if componentNameLower != "" {
-		targetPkg = componentNameLower
+	if componentName != "" {
+		targetDir = strings.ToLower(componentName)
 	} else {
-		targetPkg = filepath.Base(workDir)
+		componentName = filepath.Base(workDir)
 	}
+
+	componentNameLower := strings.ToLower(componentName)
+	componentPackageDir := filepath.Join(packageDir, targetDir)
 
 	publicStandInGen := gen.Block(
 		gen.Package(
-			gen.Name(targetPkg),
+			gen.Name(componentNameLower),
 			gen.SourceText(
 				string(data.Must("bundle.gen")),
 				struct {
@@ -85,7 +86,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 				Settings      bool
 			}{
 				TargetDir:     "./",
-				TargetPackage: targetPkg,
+				TargetPackage: componentNameLower,
 				Settings:      true,
 				Name:          componentName,
 				Package:       componentNameLower,
@@ -115,7 +116,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 				Path   string
 				JSFile string
 			}{
-				Name:   targetPkg,
+				Name:   componentNameLower,
 				Path:   "public",
 				JSFile: fmt.Sprintf("%s/%s", "js", "main.js"),
 			},
@@ -129,7 +130,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 				Name    string
 				Package string
 			}{
-				Name:    targetPkg,
+				Name:    componentNameLower,
 				Package: componentPackageDir,
 			},
 		),
@@ -143,57 +144,57 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 	commands := []gen.WriteDirective{
 		{
 			DontOverride: false,
-			Dir:          componentNameLower,
+			Dir:          targetDir,
 		},
 		{
 			DontOverride: false,
 			Writer:       htmlGen,
 			FileName:     "index.html",
-			Dir:          componentNameLower,
+			Dir:          targetDir,
 		},
 		{
 			DontOverride: false,
 			FileName:     "main.js",
-			Dir:          filepath.Join(componentNameLower, "js"),
+			Dir:          filepath.Join(targetDir, "js"),
 			Writer:       bytes.NewBufferString("//strictmode"),
 		},
 		{
 			DontOverride: false,
-			Dir:          filepath.Join(componentNameLower, "css"),
+			Dir:          filepath.Join(targetDir, "css"),
 			FileName:     "normalize.css",
 			Writer:       bytes.NewBuffer(gridNormCSS),
 		},
 		{
 			DontOverride: false,
-			Dir:          filepath.Join(componentNameLower, "css"),
+			Dir:          filepath.Join(targetDir, "css"),
 			FileName:     "grid.css",
 			Writer:       bytes.NewBuffer(gridCSSData),
 		},
 		{
 			DontOverride: false,
-			Dir:          filepath.Join(componentNameLower, "less"),
+			Dir:          filepath.Join(targetDir, "less"),
 		},
 		{
 			DontOverride: false,
 			Writer:       lessGen,
-			Dir:          filepath.Join(componentNameLower, "less"),
+			Dir:          filepath.Join(targetDir, "less"),
 			FileName:     fmt.Sprintf("%s.less", lessName),
 		},
 		{
 			DontOverride: true,
 			Writer:       tomlGen,
-			Dir:          componentNameLower,
+			Dir:          targetDir,
 			FileName:     "settings.toml",
 		},
 		{
 			DontOverride: true,
-			Dir:          componentNameLower,
+			Dir:          targetDir,
 			FileName:     "generate.go",
 			Writer:       fmtwriter.New(publicGen, true, true),
 		},
 		{
 			DontOverride: true,
-			Dir:          componentNameLower,
+			Dir:          targetDir,
 			FileName:     "bundle.go",
 			Writer:       fmtwriter.New(publicStandInGen, true, true),
 		},

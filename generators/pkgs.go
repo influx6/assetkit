@@ -26,15 +26,16 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 	}
 
 	componentName := badSymbols.ReplaceAllString(an.Arguments[0], "")
-	componentNameLower := strings.ToLower(componentName)
 
-	var targetPkg string
+	var targetDir string
 
 	if componentName != "" {
-		targetPkg = strings.ToLower(componentName)
+		targetDir = strings.ToLower(componentName)
 	} else {
-		targetPkg = filepath.Base(workDir)
+		componentName = filepath.Base(workDir)
 	}
+
+	componentNameLower := strings.ToLower(componentName)
 
 	generatorGen := gen.Block(
 		gen.SourceText(
@@ -48,7 +49,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 				Settings      bool
 			}{
 				TargetDir:     "./",
-				TargetPackage: targetPkg,
+				TargetPackage: componentNameLower,
 				Name:          componentName,
 				Package:       componentNameLower,
 			},
@@ -57,7 +58,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 
 	pipeGen := gen.Block(
 		gen.Package(
-			gen.Name(targetPkg),
+			gen.Name(componentNameLower),
 			gen.Block(
 				gen.Text("\n"),
 				gen.Text("//go:generate go run generate.go"),
@@ -78,7 +79,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 				Path   string
 				JSFile string
 			}{
-				Name:   targetPkg,
+				Name:   componentNameLower,
 				Path:   "public",
 				JSFile: fmt.Sprintf("%s/%s", "js", "main.js"),
 			},
@@ -89,19 +90,19 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 		{
 			DontOverride: false,
 			FileName:     "bundle.go",
-			Dir:          componentNameLower,
+			Dir:          targetDir,
 			Writer:       fmtwriter.New(pipeGen, true, true),
 		},
 		{
 			DontOverride: false,
 			Writer:       htmlGen,
-			Dir:          componentNameLower,
-			FileName:     fmt.Sprintf("%s.html", targetPkg),
+			Dir:          targetDir,
+			FileName:     fmt.Sprintf("%s.html", componentNameLower),
 		},
 		{
 			DontOverride: false,
 			FileName:     "generate.go",
-			Dir:          componentNameLower,
+			Dir:          targetDir,
 			Writer:       fmtwriter.New(generatorGen, true, true),
 		},
 	}, nil
