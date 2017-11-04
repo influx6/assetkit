@@ -11,13 +11,13 @@ import (
 	"github.com/gu-io/gu/trees"
 	"github.com/influx6/faux/fmtwriter"
 	"github.com/influx6/moz/gen"
-	"github.com/influx6/trails/assets"
-	"github.com/influx6/trails/generators/data"
+	"github.com/influx6/trail/assets"
+	"github.com/influx6/trail/generators/data"
 )
 
 // StaticMarkupPacker defines a struct which implements the assets.Packer interface
 // and will convert all .static files into go files with the file html content
-// turned into type-safe trees.Markup structures(see github.com/influx6/trails/tree/master/trees).
+// turned into type-safe trees.Markup structures(see github.com/influx6/trail/tree/master/trees).
 type StaticMarkupPacker struct {
 	PackageName     string
 	DestinationFile string

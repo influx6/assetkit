@@ -17,7 +17,8 @@ var (
 )
 
 var (
-	getVersion = *flag.Bool("v", false, "Print version")
+	getVersion   = *flag.Bool("v", false, "Print version")
+	forceRebuild = *flag.Bool("f", false, "force rebuild")
 )
 
 func main() {
@@ -47,7 +48,7 @@ func main() {
 		return
 	}
 
-	if err := ast.SimpleWriteDirectives("", true, commands...); err != nil {
+	if err := ast.SimpleWriteDirectives("", forceRebuild, commands...); err != nil {
 		log.Fatalf("Failed to create package directories: %+q", err)
 		return
 	}
@@ -76,8 +77,8 @@ EXAMPLES:
 	trail static-data
 
 FLAGS:
-
   -v          Print version.
+	-f 					Force re-generation of all files
 
 `)
 }

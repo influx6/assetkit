@@ -10,7 +10,7 @@ import (
 	"sync"
 	"text/template"
 
-	"github.com/influx6/trails/generators/data"
+	"github.com/influx6/trail/generators/data"
 	"github.com/influx6/faux/hexwriter"
 	"github.com/influx6/moz/gen"
 )

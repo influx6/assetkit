@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/influx6/trails/assets"
+	"github.com/influx6/trail/assets"
 	"github.com/influx6/faux/exec"
 	"github.com/influx6/faux/metrics"
 )
@@ -20,9 +20,9 @@ import (
 var (
 	inGOPATH         = os.Getenv("GOPATH")
 	inGOPATHSrc      = filepath.Join(inGOPATH, "src")
-	guSrc            = filepath.Join(inGOPATHSrc, "github.com/influx6/trails")
-	guSrcNodeModules = filepath.Join(inGOPATHSrc, "github.com/influx6/trails/node_modules")
-	cleanCSSBin      = filepath.Join(inGOPATHSrc, "github.com/influx6/trails/node_modules/clean-css-cli/bin")
+	guSrc            = filepath.Join(inGOPATHSrc, "github.com/influx6/trail")
+	guSrcNodeModules = filepath.Join(inGOPATHSrc, "github.com/influx6/trail/node_modules")
+	cleanCSSBin      = filepath.Join(inGOPATHSrc, "github.com/influx6/trail/node_modules/clean-css-cli/bin")
 )
 
 // CleanCSSPacker defines an implementation for parsing css files.

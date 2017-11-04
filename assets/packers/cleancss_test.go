@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/influx6/trails/assets"
-	"github.com/influx6/trails/assets/packers"
+	"github.com/influx6/trail/assets"
+	"github.com/influx6/trail/assets/packers"
 	"github.com/influx6/faux/tests"
 )
 

@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 
 	"github.com/BurntSushi/toml"
-	"github.com/influx6/trails/common"
-	"github.com/influx6/trails/common/themes/styleguide"
+	"github.com/influx6/trail/common"
+	"github.com/influx6/trail/common/themes/styleguide"
 )
 
 func main(){
