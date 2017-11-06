@@ -55,17 +55,19 @@ func MustFindFile(path string, doGzip bool) io.Reader {
 }
 
 // FindFile returns a io.Reader by seeking the giving file path if it exists.
-func FindFile(path string, doGzip bool) (io.Reader, error){
+func FindFile(path string, doGzip bool) (io.Reader, int64, error){
   item, ok := assetFiles[path]
   if !ok {
-    return nil, fmt.Errorf("File %q not found in file system", path)
+    return nil,0, fmt.Errorf("File %q not found in file system", path)
   }
 
+	datalen := int64(len(item.data))
   if !doGzip {
-    return bytes.NewReader(item.data), nil
+    return bytes.NewReader(item.data), datalen, nil
   }
 
-  return gzip.NewReader(bytes.NewReader(item.data))
+  gzr, err := gzip.NewReader(bytes.NewReader(item.data))
+	return gzr, datalen, nil
 }
 
 // MustReadFile calls ReadFile to retrieve file content with path else panics.

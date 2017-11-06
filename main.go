@@ -17,8 +17,8 @@ var (
 )
 
 var (
-	getVersion   = *flag.Bool("v", false, "Print version")
-	forceRebuild = *flag.Bool("f", false, "force rebuild")
+	getVersion   = flag.Bool("v", false, "Print version")
+	forceRebuild = flag.Bool("f", false, "force rebuild")
 )
 
 func main() {
@@ -26,7 +26,7 @@ func main() {
 	flag.Parse()
 
 	// if we are to print getVersion.
-	if getVersion {
+	if *getVersion {
 		printVersion()
 		return
 	}
@@ -63,7 +63,7 @@ func generateView(currentDir, name string) {
 		return
 	}
 
-	if err := ast.SimpleWriteDirectives("", forceRebuild, commands...); err != nil {
+	if err := ast.SimpleWriteDirectives("", *forceRebuild, commands...); err != nil {
 		log.Fatalf("Failed to create package directories: %+q", err)
 		return
 	}
@@ -80,7 +80,7 @@ func generatePublic(currentDir, name string) {
 		return
 	}
 
-	if err := ast.SimpleWriteDirectives("", forceRebuild, commands...); err != nil {
+	if err := ast.SimpleWriteDirectives("", *forceRebuild, commands...); err != nil {
 		log.Fatalf("Failed to create package directories: %+q", err)
 		return
 	}
