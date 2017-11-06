@@ -71,6 +71,17 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 		),
 	)
 
+	baseGen := gen.Block(
+		gen.Package(
+			gen.Name(componentNameLower),
+			gen.Block(
+				gen.Text("\n"),
+				gen.Text("//go:generate go run generate.go"),
+				gen.Text("\n"),
+			),
+		),
+	)
+
 	htmlGen := gen.Block(
 		gen.SourceText(
 			string(data.Must("base.html.gen")),
@@ -104,6 +115,12 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 			FileName:     "generate.go",
 			Dir:          targetDir,
 			Writer:       fmtwriter.New(generatorGen, true, true),
+		},
+		{
+			DontOverride: false,
+			FileName:     fmt.Sprintf("%s.go", componentNameLower),
+			Dir:          targetDir,
+			Writer:       fmtwriter.New(baseGen, true, true),
 		},
 	}, nil
 }
