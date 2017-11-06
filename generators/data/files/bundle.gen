@@ -48,7 +48,7 @@ func FindFile(path string, doGzip bool) (io.Reader, int64, error){
   }
 
   gzr, err := gzip.NewReader(bytes.NewReader(item.data))
-	return gzr, datalen, nil
+	return gzr, datalen, err
 }
 
 // MustReadFile calls ReadFile to retrieve file content with path else panics.
