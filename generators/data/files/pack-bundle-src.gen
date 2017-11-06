@@ -45,13 +45,13 @@ func FilesFor(ext string) []string {
 }
 
 // MustFindFile calls FindFile to retrieve file reader with path else panics.
-func MustFindFile(path string, doGzip bool) io.Reader {
-  reader, err := FindFile(path, doGzip)
+func MustFindFile(path string, doGzip bool) (io.Reader, int64) {
+  reader, size, err := FindFile(path, doGzip)
   if err != nil {
     panic(err)
   }
 
-  return reader
+  return reader, size
 }
 
 // FindFile returns a io.Reader by seeking the giving file path if it exists.
@@ -100,7 +100,7 @@ func MustReadFileByte(path string, doGzip bool) []byte {
 // ReadFileByte attempts to return the underline data associated with the given path
 // if it exists else returns an error.
 func ReadFileByte(path string, doGzip bool) ([]byte, error){
-  reader, err := FindFile(path, doGzip)
+  reader, _, err := FindFile(path, doGzip)
   if err != nil {
     return nil, err
   }
