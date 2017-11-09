@@ -54,7 +54,7 @@ func MustFindFile(path string, doGzip bool) (io.Reader, int64) {
   return reader, size
 }
 
-// FindDecompressGzippedFile returns a io.Reader by seeking the giving file path if it exists.
+// FindDecompressedGzippedFile returns a io.Reader by seeking the giving file path if it exists.
 // It returns an uncompressed file.
 func FindDecompressedGzippedFile(path string) (io.Reader, int64, error){
 	return FindFile(path, true)
@@ -108,7 +108,7 @@ func MustFindFileReader(path string) (*bytes.Reader, int64){
 	return reader, size
 }
 
-// FindFile returns a io.Reader by seeking the giving file path if it exists.
+// FindFileReader returns a io.Reader by seeking the giving file path if it exists.
 func FindFileReader(path string) (*bytes.Reader, int64, error){
   item, ok := assetFiles[path]
   if !ok {

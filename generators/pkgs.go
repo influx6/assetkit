@@ -103,7 +103,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 			Writer:       fmtwriter.New(pipeGen, true, true),
 		},
 		{
-			DontOverride: false,
+			DontOverride: true,
 			Writer:       htmlGen,
 			Dir:          targetDir,
 			FileName:     fmt.Sprintf("%s.html", componentNameLower),
@@ -115,7 +115,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 			Writer:       fmtwriter.New(generatorGen, true, true),
 		},
 		{
-			DontOverride: false,
+			DontOverride: true,
 			FileName:     fmt.Sprintf("%s.go", componentNameLower),
 			Dir:          targetDir,
 			Writer:       fmtwriter.New(baseGen, true, true),
