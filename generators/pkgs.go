@@ -61,10 +61,8 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 			gen.Name(componentNameLower),
 			gen.Block(
 				gen.Text("\n"),
-				gen.Text("//go:generate go run generate.go"),
-				gen.Text("\n"),
 				gen.SourceText(
-					string(data.Must("bundle.gen")),
+					string(data.Must("bundle-standin.gen")),
 					nil,
 				),
 			),

@@ -62,7 +62,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		gen.Package(
 			gen.Name(componentNameLower),
 			gen.SourceText(
-				string(data.Must("bundle.gen")),
+				string(data.Must("bundle-standin.gen")),
 				struct {
 					Name    string
 					Package string

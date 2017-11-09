@@ -54,20 +54,68 @@ func MustFindFile(path string, doGzip bool) (io.Reader, int64) {
   return reader, size
 }
 
+// FindDecompressGzippedFile returns a io.Reader by seeking the giving file path if it exists.
+// It returns an uncompressed file.
+func FindDecompressedGzippedFile(path string) (io.Reader, int64, error){
+	return FindFile(path, true)
+}
+
+// MustFindDecompressedGzippedFile panics if error occured, uses FindUnGzippedFile underneath.
+func MustFindDecompressedGzippedFile(path string) (io.Reader, int64){
+	reader, size, err := FindDecompressedGzippedFile(path)
+	if err != nil {
+		panic(err)
+	}
+	return reader, size
+}
+
+// FindGzippedFile returns a io.Reader by seeking the giving file path if it exists.
+// It returns an uncompressed file.
+func FindGzippedFile(path string) (io.Reader, int64, error){
+	return FindFile(path, false)
+}
+
+// MustFindGzippedFile panics if error occured, uses FindUnGzippedFile underneath.
+func MustFindGzippedFile(path string) (io.Reader, int64){
+	reader, size, err := FindGzippedFile(path)
+	if err != nil {
+		panic(err)
+	}
+	return reader, size
+}
+
 // FindFile returns a io.Reader by seeking the giving file path if it exists.
 func FindFile(path string, doGzip bool) (io.Reader, int64, error){
+	reader, size, err := FindFileReader(path)
+	if err != nil {
+		return nil, size, err
+	}
+
+	if !doGzip {
+		return reader, size, nil
+	}
+
+  gzr, err := gzip.NewReader(reader)
+	return gzr, size, err
+}
+
+// MustFindFileReader returns bytes.Reader for path else panics.
+func MustFindFileReader(path string) (*bytes.Reader, int64){
+	reader, size, err := FindFileReader(path)
+	if err != nil {
+		panic(err)
+	}
+	return reader, size
+}
+
+// FindFile returns a io.Reader by seeking the giving file path if it exists.
+func FindFileReader(path string) (*bytes.Reader, int64, error){
   item, ok := assetFiles[path]
   if !ok {
     return nil,0, fmt.Errorf("File %q not found in file system", path)
   }
 
-	datalen := int64(len(item.data))
-  if !doGzip {
-    return bytes.NewReader(item.data), datalen, nil
-  }
-
-  gzr, err := gzip.NewReader(bytes.NewReader(item.data))
-	return gzr, datalen, err
+  return bytes.NewReader(item.data), int64(len(item.data)), nil
 }
 
 // MustReadFile calls ReadFile to retrieve file content with path else panics.
