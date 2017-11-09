@@ -160,7 +160,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			Dir:          targetDir,
 		},
 		{
-			DontOverride: false,
+			DontOverride: true,
 			Writer:       htmlGen,
 			FileName:     "index.html",
 			Dir:          targetDir,
@@ -206,13 +206,13 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			FileName:     "settings.toml",
 		},
 		{
-			DontOverride: true,
+			DontOverride: false,
 			Dir:          targetDir,
 			FileName:     "generate.go",
 			Writer:       fmtwriter.New(publicGen, true, true),
 		},
 		{
-			DontOverride: true,
+			DontOverride: false,
 			Dir:          targetDir,
 			FileName:     "bundle.go",
 			Writer:       fmtwriter.New(publicStandInGen, true, true),
