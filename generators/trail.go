@@ -172,7 +172,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			Dir:          targetDir,
 		},
 		{
-			DontOverride: false,
+			DontOverride: true,
 			FileName:     "main.js",
 			Dir:          filepath.Join(targetDir, "js"),
 			Writer:       bytes.NewBufferString("//strictmode"),
@@ -194,7 +194,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			Dir:          filepath.Join(targetDir, "less"),
 		},
 		{
-			DontOverride: false,
+			DontOverride: true,
 			Writer:       lessGen,
 			Dir:          filepath.Join(targetDir, "less"),
 			FileName:     fmt.Sprintf("%s.less", lessName),
