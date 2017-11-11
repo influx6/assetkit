@@ -17,7 +17,7 @@
   {{template "beforescripts" .}}
   </head>
   <body>
-    <div class="flash grid-block grid-full one-whole">
+    <div class="flash one-whole">
       {{range $name, $messages := flashMessages}}
       {{range $messages}}<div class="one-whole center-aligned hide flash-message {{$name}}">{{.}}</div>{{end}}
       {{end}}
