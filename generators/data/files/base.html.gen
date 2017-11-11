@@ -17,11 +17,12 @@
   {{template "beforescripts" .}}
   </head>
   <body>
-    <div class="flash one-whole">
+    <div class="flash block one-whole">
       {{range $name, $messages := flashMessages}}
       {{range $messages}}<div class="one-whole center-aligned hide flash-message {{$name}}">{{.}}</div>{{end}}
       {{end}}
     </div>
+    {{ template "content" .}}
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/js/flash.js"></script>
     <script type="text/javascript" src="/static/js/main.js"></script>
@@ -29,6 +30,7 @@
   </body>
 <html>
 {{define "nav"}}{{end}}
+{{define "content"}}{{end}}
 {{define "styles"}}{{end}}
 {{define "beforescripts"}}{{end}}
 {{define "afterscripts"}}{{end}}
