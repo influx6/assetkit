@@ -146,10 +146,10 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			DontOverride: true,
 			FileName:     "index.html",
 			Dir:          filepath.Join(targetDir, "layout"),
-			Writer:       bytes.NewBuffer(data.Must("base.html.gen")),
+			Writer:       bytes.NewBuffer(bytes.Replace(data.Must("base.html.gen"), []byte("{{.Name}}"), []byte(componentName), 1)),
 		},
 		{
-			DontOverride: false,
+			DontOverride: true,
 			Writer:       docGen,
 			FileName:     "doc.go",
 			Dir:          targetDir,
@@ -167,7 +167,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			Dir:          filepath.Join(targetDir, "js"),
 		},
 		{
-			DontOverride: false,
+			DontOverride: true,
 			Dir:          filepath.Join(targetDir, "js"),
 			FileName:     "flash.js",
 			Writer:       bytes.NewBuffer(data.Must("flash.js.gen")),
@@ -179,7 +179,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			Writer:       bytes.NewBuffer(gridNormCSS),
 		},
 		{
-			DontOverride: false,
+			DontOverride: true,
 			Dir:          filepath.Join(targetDir, "css"),
 			FileName:     "flash.css",
 			Writer:       bytes.NewBuffer(flashCSSData),
@@ -191,7 +191,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			Writer:       bytes.NewBuffer(gridCSSData),
 		},
 		{
-			DontOverride: false,
+			DontOverride: true,
 			Dir:          filepath.Join(targetDir, "css"),
 			FileName:     "base.css",
 			Writer:       bytes.NewBuffer(baseCSSData),
