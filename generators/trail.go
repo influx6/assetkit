@@ -146,7 +146,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			DontOverride: true,
 			FileName:     "index.html",
 			Dir:          filepath.Join(targetDir, "layout"),
-			Writer:       bytes.NewBuffer(bytes.Replace(data.Must("base.html.gen"), []byte("{{.Name}}"), []byte(componentName), 1)),
+			Writer:       bytes.NewBuffer(bytes.Replace(data.Must("base.html.gen"), []byte("{{.Name}}"), []byte(componentName), -1)),
 		},
 		{
 			DontOverride: true,
