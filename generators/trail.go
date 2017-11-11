@@ -104,19 +104,6 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		),
 	)
 
-	htmlGen := gen.Block(
-		gen.SourceText(
-			string(data.Must("base.html.gen")),
-			struct {
-				Name string
-				Path string
-			}{
-				Name: componentNameLower,
-				Path: "public",
-			},
-		),
-	)
-
 	jsGen := gen.Block(gen.SourceText(string(data.Must("jquery.min.js.gen")), struct{}{}))
 
 	tomlGen := gen.Block(
@@ -157,9 +144,9 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		},
 		{
 			DontOverride: true,
-			Writer:       htmlGen,
 			FileName:     "index.html",
 			Dir:          filepath.Join(targetDir, "layout"),
+			Writer:       bytes.NewBuffer(data.Must("base.html.gen")),
 		},
 		{
 			DontOverride: false,
