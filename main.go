@@ -43,6 +43,8 @@ func main() {
 	switch command {
 	case "public":
 		generatePublic(currentDir, name)
+	case "files":
+		generateFiles(currentDir, name)
 	case "view":
 		generateView(currentDir, name)
 	default:
@@ -50,6 +52,23 @@ func main() {
 	}
 
 	log.Println("Trail asset bundling ready!")
+}
+
+func generateFiles(currentDir, name string) {
+	commands, err := generators.TrailFiles(
+		ast.AnnotationDeclaration{Arguments: []string{name}},
+		ast.PackageDeclaration{FilePath: currentDir},
+		ast.Package{},
+	)
+	if err != nil {
+		log.Fatalf("Failed to generate trail directives: %+q", err)
+		return
+	}
+
+	if err := ast.SimpleWriteDirectives("", *forceRebuild, commands...); err != nil {
+		log.Fatalf("Failed to create package directories: %+q", err)
+		return
+	}
 }
 
 func generateView(currentDir, name string) {
@@ -104,7 +123,8 @@ Trail creates a package for package of web assets using its internal bundlers.
 
 COMMANDS:
 
-	trail view [optional-name]	# Creates a generate.go file which bundles all assets in create directory.
+	trail files [optional-name]	# Creates a generate.go file which bundles all assets in created directory.
+	trail view [optional-name]	# Creates a generate.go file which bundles all assets in created directory.
 	trail public [optional-name]	# Creates a complete package and content for asset bundling all static files
 
 where:

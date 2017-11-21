@@ -90,8 +90,7 @@ func main() {
 
 	dir := filepath.Join(".", "data.go")
 	if err := utils.WriteFile(events, fmtwriter.New(assetGen, true, true), dir); err != nil {
-		events.Emit(metrics.Error(err).With("dir", dir).
-			With("message", "Failed to create new package file: data.go"))
+		events.Emit(metrics.Error(err), metrics.With("dir", dir), metrics.With("message", "Failed to create new package file: data.go"))
 		panic(err)
 	}
 }
