@@ -8,7 +8,7 @@ to manage and bundle your different assets and files, letting you bundle them al
 ## Install
 
 ```
-go get github.com/influx6/trail
+go get github.com/gokit/assetkit
 ```
 
 ## Usage

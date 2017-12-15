@@ -6,14 +6,14 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/influx6/trail/assets"
-	"github.com/influx6/trail/assets/packers"
+	"github.com/gokit/assetkit/assets"
+	"github.com/gokit/assetkit/assets/packers"
 	"github.com/influx6/faux/tests"
 )
 
 var (
 	gopath  = os.Getenv("GOPATH")
-	thisSrc = filepath.Join(gopath, "src/github.com/influx6/trail")
+	thisSrc = filepath.Join(gopath, "src/github.com/gokit/assetkit")
 )
 
 func TestLessPacker(t *testing.T) {

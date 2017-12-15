@@ -15,7 +15,7 @@ import (
 
 	"github.com/influx6/moz/ast"
 	"github.com/influx6/moz/gen"
-	"github.com/influx6/trail/generators/data"
+	"github.com/gokit/assetkit/generators/data"
 )
 
 var (

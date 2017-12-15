@@ -1,8 +1,8 @@
 package {{lower .Package}}
 
 import (
-	"github.com/influx6/trail"
-	"github.com/influx6/trail/trees"
+	"github.com/gokit/assetkit"
+	"github.com/gokit/assetkit/trees"
 )
 
 var (

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/influx6/trail/assets"
+	"github.com/gokit/assetkit/assets"
 	"github.com/influx6/moz/gen"
 )
 

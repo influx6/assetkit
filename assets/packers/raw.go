@@ -7,7 +7,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/influx6/trail/assets"
+	"github.com/gokit/assetkit/assets"
 )
 
 // RawPacker defines an implementation for parsing css files.

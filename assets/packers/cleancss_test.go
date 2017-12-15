@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/influx6/trail/assets"
-	"github.com/influx6/trail/assets/packers"
+	"github.com/gokit/assetkit/assets"
+	"github.com/gokit/assetkit/assets/packers"
 	"github.com/influx6/faux/tests"
 )
 

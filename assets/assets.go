@@ -10,9 +10,9 @@ import (
 	"sync"
 	"text/template"
 
+	"github.com/gokit/assetkit/generators/data"
 	"github.com/influx6/faux/hexwriter"
 	"github.com/influx6/moz/gen"
-	"github.com/influx6/trail/generators/data"
 )
 
 var (

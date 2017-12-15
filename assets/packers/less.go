@@ -12,13 +12,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/influx6/trail/assets"
+	"github.com/gokit/assetkit/assets"
 	"github.com/influx6/faux/exec"
 	"github.com/influx6/faux/metrics"
 )
 
 var (
-	lessBin = filepath.Join(inGOPATHSrc, "github.com/influx6/trail/node_modules/less/bin")
+	lessBin = filepath.Join(inGOPATHSrc, "github.com/gokit/assetkit/node_modules/less/bin")
 )
 
 // LessPacker defines an implementation for parsing .less files into css files using the less compiler in nodejs.

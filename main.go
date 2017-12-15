@@ -2,144 +2,108 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"log"
 	"os"
-	"strings"
 
+	"github.com/gokit/assetkit/generators"
+	"github.com/influx6/faux/context"
+	"github.com/influx6/faux/flags"
 	"github.com/influx6/moz/ast"
-	"github.com/influx6/trail/generators"
-)
-
-var (
-	version   = "0.0.1" // rely on linker -ldflags -X main.version"
-	gitCommit = ""      // rely on linker: -ldflags -X main.gitCommit"
-)
-
-var (
-	getVersion   = flag.Bool("v", false, "Print version")
-	forceRebuild = flag.Bool("f", false, "force rebuild")
 )
 
 func main() {
-	flag.Usage = printUsage
-	flag.Parse()
+	flags.Run("assetkit", flags.Command{
+		Name:      "public",
+		ShortDesc: "Generates asset bundling for standard public static files",
+		Desc:      "Generates asset bundling for standard public static files",
+		Action: func(ctx context.Context) error {
+			force, _ := ctx.Bag().GetBool("force")
 
-	// if we are to print getVersion.
-	if *getVersion {
-		printVersion()
-		return
-	}
+			name := flag.Arg(1)
 
-	command := flag.Arg(0)
-	name := flag.Arg(1)
+			currentdir, err := os.Getwd()
+			if err != nil {
+				return err
+			}
 
-	currentDir, err := os.Getwd()
-	if err != nil {
-		log.Fatalf("Failed to get directory path: %+q", err)
-		return
-	}
+			commands, err := generators.TrailPackages(
+				ast.AnnotationDeclaration{Arguments: []string{name}},
+				ast.PackageDeclaration{FilePath: currentdir},
+				ast.Package{},
+			)
+			if err != nil {
+				return err
+			}
 
-	switch command {
-	case "public":
-		generatePublic(currentDir, name)
-	case "files":
-		generateFiles(currentDir, name)
-	case "view":
-		generateView(currentDir, name)
-	default:
-		printUsage()
-	}
+			return ast.SimpleWriteDirectives("", force, commands...)
+		},
+		Flags: []flags.Flag{
+			&flags.BoolFlag{
+				Name: "force",
+				Desc: "force regeneration of packages annotation directives.",
+			},
+		},
+	},
+		flags.Command{
+			Name:      "view",
+			ShortDesc: "Generates asset bundling isolated view package",
+			Desc:      "Generates asset bundling isolated view package",
+			Action: func(ctx context.Context) error {
+				force, _ := ctx.Bag().GetBool("force")
 
-	log.Println("Trail asset bundling ready!")
-}
+				name := flag.Arg(1)
 
-func generateFiles(currentDir, name string) {
-	commands, err := generators.TrailFiles(
-		ast.AnnotationDeclaration{Arguments: []string{name}},
-		ast.PackageDeclaration{FilePath: currentDir},
-		ast.Package{},
-	)
-	if err != nil {
-		log.Fatalf("Failed to generate trail directives: %+q", err)
-		return
-	}
+				currentdir, err := os.Getwd()
+				if err != nil {
+					return err
+				}
 
-	if err := ast.SimpleWriteDirectives("", *forceRebuild, commands...); err != nil {
-		log.Fatalf("Failed to create package directories: %+q", err)
-		return
-	}
-}
+				commands, err := generators.TrailView(
+					ast.AnnotationDeclaration{Arguments: []string{name}},
+					ast.PackageDeclaration{FilePath: currentdir},
+					ast.Package{},
+				)
+				if err != nil {
+					return err
+				}
 
-func generateView(currentDir, name string) {
-	commands, err := generators.TrailView(
-		ast.AnnotationDeclaration{Arguments: []string{name}},
-		ast.PackageDeclaration{FilePath: currentDir},
-		ast.Package{},
-	)
-	if err != nil {
-		log.Fatalf("Failed to generate trail directives: %+q", err)
-		return
-	}
+				return ast.SimpleWriteDirectives("", force, commands...)
+			},
+			Flags: []flags.Flag{
+				&flags.BoolFlag{
+					Name: "force",
+					Desc: "force regeneration of packages annotation directives.",
+				},
+			},
+		},
+		flags.Command{
+			Name:      "static",
+			Desc:      "Generates bundling general use case static files",
+			ShortDesc: "Generates bundling general use case static files",
+			Action: func(ctx context.Context) error {
+				force, _ := ctx.Bag().GetBool("force")
+				name := flag.Arg(1)
 
-	if err := ast.SimpleWriteDirectives("", *forceRebuild, commands...); err != nil {
-		log.Fatalf("Failed to create package directories: %+q", err)
-		return
-	}
-}
+				currentdir, err := os.Getwd()
+				if err != nil {
+					return err
+				}
 
-func generatePublic(currentDir, name string) {
-	commands, err := generators.TrailPackages(
-		ast.AnnotationDeclaration{Arguments: []string{name}},
-		ast.PackageDeclaration{FilePath: currentDir},
-		ast.Package{},
-	)
-	if err != nil {
-		log.Fatalf("Failed to generate trail directives: %+q", err)
-		return
-	}
+				commands, err := generators.TrailFiles(
+					ast.AnnotationDeclaration{Arguments: []string{name}},
+					ast.PackageDeclaration{FilePath: currentdir},
+					ast.Package{},
+				)
+				if err != nil {
+					return err
+				}
 
-	if err := ast.SimpleWriteDirectives("", *forceRebuild, commands...); err != nil {
-		log.Fatalf("Failed to create package directories: %+q", err)
-		return
-	}
-}
-
-// printVersion prints corresponding build getVersion with associated build stamp and git commit if provided.
-func printVersion() {
-	fragments := []string{version}
-
-	if gitCommit != "" {
-		fragments = append(fragments, fmt.Sprintf("git#%s", gitCommit))
-	}
-
-	fmt.Fprint(os.Stdout, strings.Join(fragments, " "))
-}
-
-// printUsage prints out usage message for CLI tool.
-func printUsage() {
-	fmt.Fprintf(os.Stdout, `Usage: trail [options]
-Trail creates a package for package of web assets using its internal bundlers.
-
-COMMANDS:
-
-	trail files [optional-name]	# Creates a generate.go file which bundles all assets in created directory.
-	trail view [optional-name]	# Creates a generate.go file which bundles all assets in created directory.
-	trail public [optional-name]	# Creates a complete package and content for asset bundling all static files
-
-where:
-
-	[optional-name] defines the name for the directory to be used for the assets if provided, else
-	having files created within working directory.
-
-EXAMPLES:
-
-	trail view home			# Creates a generate.go file which bundles all assets in create directory.
-	trail public static-data	# Creates a complete package and content for asset bundling all static files
-
-
-FLAGS:
-	-v      Print version.
-	-f 	Force re-generation of all files
-`)
+				return ast.SimpleWriteDirectives("", force, commands...)
+			},
+			Flags: []flags.Flag{
+				&flags.BoolFlag{
+					Name: "force",
+					Desc: "force regeneration of packages annotation directives.",
+				},
+			},
+		})
 }

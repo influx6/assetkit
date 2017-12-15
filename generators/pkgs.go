@@ -11,7 +11,7 @@ import (
 
 	"github.com/influx6/moz/ast"
 	"github.com/influx6/moz/gen"
-	"github.com/influx6/trail/generators/data"
+	"github.com/gokit/assetkit/generators/data"
 )
 
 // TrailView returns a series of file commands which create asset bundling for a giving file.

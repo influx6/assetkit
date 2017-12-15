@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"text/template"
 
-	"github.com/influx6/trail/common"
+	"github.com/gokit/assetkit/common"
 	"github.com/influx6/faux/colors"
 	colorful "github.com/lucasb-eyer/go-colorful"
 )
