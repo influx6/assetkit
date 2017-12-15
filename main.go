@@ -13,7 +13,7 @@ import (
 func main() {
 	flags.Run("assetkit", flags.Command{
 		Name:      "public",
-		ShortDesc: "Generates asset bundling for standard public static files",
+		ShortDesc: "Generates bundling for public files",
 		Desc:      "Generates asset bundling for standard public static files",
 		Action: func(ctx context.Context) error {
 			force, _ := ctx.Bag().GetBool("force")
@@ -45,7 +45,7 @@ func main() {
 	},
 		flags.Command{
 			Name:      "view",
-			ShortDesc: "Generates asset bundling isolated view package",
+			ShortDesc: "Generates bundling with a html file",
 			Desc:      "Generates asset bundling isolated view package",
 			Action: func(ctx context.Context) error {
 				force, _ := ctx.Bag().GetBool("force")
@@ -77,7 +77,7 @@ func main() {
 		},
 		flags.Command{
 			Name:      "static",
-			Desc:      "Generates bundling general use case static files",
+			Desc:      "Generates bundling for general static files",
 			ShortDesc: "Generates bundling general use case static files",
 			Action: func(ctx context.Context) error {
 				force, _ := ctx.Bag().GetBool("force")

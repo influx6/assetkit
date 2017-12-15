@@ -1,8 +1,7 @@
-Trail
+AssetKit
 ---------
 
-Trail brings web assets bundling and preprocessing made simple in Go. It provides set of simple processors that help
-to manage and bundle your different assets and files, letting you bundle them along with your application binaries.
+AssetKit code generates asset bundling packages for you. 
 
 
 ## Install
@@ -13,32 +12,30 @@ go get github.com/gokit/assetkit
 
 ## Usage
 
-Simple call the `trail` CLI with a name for the giving package:
+Simple call the `assetkit` CLI with a wanted asset package:
 
 ```bash
-> trail
-Usage: trail [options]
-Trail creates a package for package of web assets using its internal bundlers.
+> assetkit
+Usage: assetkit [flags] [command] 
 
-COMMANDS:
+⡿ COMMANDS:
+	⠙ public	Generates asset bundling for standard public files
 
-	trail view [optional-name]	# Creates a generate.go file which bundles all assets in create directory.
-	trail public [optional-name]	# Creates a complete package and content for asset bundling all static files
+	⠙ view	Generates asset bundling with html file
 
-where:
-
-	[optional-name] defines the name for the directory to be used for the assets if provided, else
-	having files created within working directory.
-
-EXAMPLES:
-
-	trail view home			# Creates a generate.go file which bundles all assets in create directory.
-	trail public static-data	# Creates a complete package and content for asset bundling all static files
+	⠙ static	Generates bundling for general static files 
 
 
-FLAGS:
-	-v      Print version.
-	-f 	Force re-generation of all files
+⡿ HELP:
+	Run [command] help
+
+⡿ OTHERS:
+	Run 'assetkit printflags' to print all flags of all commands.
+
+⡿ WARNING:
+	Uses internal flag package so flags must precede command name. 
+	e.g 'assetkit -cmd.flag=4 run'
+
 ```
 
 
