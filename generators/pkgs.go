@@ -9,9 +9,9 @@ import (
 
 	"github.com/influx6/faux/fmtwriter"
 
+	"github.com/gokit/assetkit/generators/data"
 	"github.com/influx6/moz/ast"
 	"github.com/influx6/moz/gen"
-	"github.com/gokit/assetkit/generators/data"
 )
 
 // TrailView returns a series of file commands which create asset bundling for a giving file.

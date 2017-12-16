@@ -6,7 +6,7 @@
 
 package styleguide
 
-// styleTemplate contains the text template used to generated the full set of 
+// styleTemplate contains the text template used to generated the full set of
 // css template for a giving styleguide.
 var styleTemplate = `
 html {
