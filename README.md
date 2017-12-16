@@ -1,5 +1,6 @@
 AssetKit
 ---------
+[![Go Report Card](https://goreportcard.com/badge/github.com/gokit/assetkit)](https://goreportcard.com/report/github.com/gokit/assetkit)
 
 AssetKit code generates asset bundling packages for you. 
 
