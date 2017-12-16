@@ -8,11 +8,11 @@ import (
 	"io/ioutil"
 	"path/filepath"
 
+	"github.com/gokit/assetkit/assets"
+	"github.com/gokit/assetkit/generators/data"
 	"github.com/gu-io/gu/trees"
 	"github.com/influx6/faux/fmtwriter"
 	"github.com/influx6/moz/gen"
-	"github.com/gokit/assetkit/assets"
-	"github.com/gokit/assetkit/generators/data"
 )
 
 // StaticMarkupPacker defines a struct which implements the assets.Packer interface
