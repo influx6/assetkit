@@ -1,11 +1,11 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"os"
 
 	"github.com/gokit/assetkit/generators"
-	"github.com/influx6/faux/context"
 	"github.com/influx6/faux/flags"
 	"github.com/influx6/moz/ast"
 )
@@ -15,8 +15,8 @@ func main() {
 		Name:      "public",
 		ShortDesc: "Generates bundling for public files",
 		Desc:      "Generates asset bundling for standard public static files",
-		Action: func(ctx context.Context) error {
-			force, _ := ctx.Bag().GetBool("force")
+		Action: func(ctx flags.Context) error {
+			force, _ := ctx.GetBool("force")
 
 			name := flag.Arg(1)
 
@@ -48,7 +48,7 @@ func main() {
 			ShortDesc: "Generates bundling with a html file",
 			Desc:      "Generates asset bundling isolated view package",
 			Action: func(ctx context.Context) error {
-				force, _ := ctx.Bag().GetBool("force")
+				force, _ := ctx.GetBool("force")
 
 				name := flag.Arg(1)
 
@@ -80,7 +80,7 @@ func main() {
 			Desc:      "Generates bundling for general static files",
 			ShortDesc: "Generates bundling general use case static files",
 			Action: func(ctx context.Context) error {
-				force, _ := ctx.Bag().GetBool("force")
+				force, _ := ctx.GetBool("force")
 				name := flag.Arg(1)
 
 				currentdir, err := os.Getwd()
