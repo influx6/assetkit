@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 	"io"
-	"bytes"
 	"path/filepath"
 	"flag"
 	"log"
@@ -15,9 +14,10 @@ import (
 	"github.com/gokit/assetkit/assets"
 	"github.com/gokit/assetkit/assets/packers"
 	"github.com/influx6/moz/gen"
-	"github.com/BurntSushi/toml"
 
 	{{if .Settings }}
+	"bytes"
+	"github.com/BurntSushi/toml"
 	"github.com/gokit/assetkit/common"
 	"github.com/gokit/assetkit/common/themes/styleguide"
 	{{end}}
