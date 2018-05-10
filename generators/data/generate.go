@@ -16,8 +16,6 @@ import (
 
 	"github.com/influx6/faux/vfiles"
 
-	"github.com/influx6/faux/fmtwriter"
-
 	"github.com/influx6/faux/metrics"
 
 	"github.com/influx6/faux/metrics/custom"
@@ -89,7 +87,7 @@ func main() {
 	)
 
 	dir := filepath.Join(".", "data.go")
-	if err := utils.WriteFile(events, fmtwriter.New(assetGen, true, true), dir); err != nil {
+	if err := utils.WriteFile(events, assetGen, dir); err != nil {
 		events.Emit(metrics.Error(err), metrics.With("dir", dir), metrics.With("message", "Failed to create new package file: data.go"))
 		panic(err)
 	}

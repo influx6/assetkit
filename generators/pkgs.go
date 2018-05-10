@@ -7,8 +7,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/influx6/faux/fmtwriter"
-
 	"github.com/gokit/assetkit/generators/data"
 	"github.com/influx6/moz/ast"
 	"github.com/influx6/moz/gen"
@@ -39,6 +37,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 
 	generatorGen := gen.Block(
 		gen.SourceText(
+			"generator.bundle",
 			string(data.Must("pack-bundle.gen")),
 			struct {
 				Name          string
@@ -62,6 +61,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 			gen.Block(
 				gen.Text("\n"),
 				gen.SourceText(
+					"generator.bundle",
 					string(data.Must("bundle-standin.gen")),
 					nil,
 				),
@@ -87,6 +87,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 
 	htmlGen := gen.Block(
 		gen.SourceText(
+			"generator.bundle",
 			string(data.Must("base.html.gen")),
 			struct {
 				Name          string
@@ -107,7 +108,7 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 			DontOverride: false,
 			FileName:     "bundle.go",
 			Dir:          targetDir,
-			Writer:       fmtwriter.New(pipeGen, true, true),
+			Writer:       (pipeGen),
 		},
 		{
 			DontOverride: true,
@@ -119,13 +120,13 @@ func TrailView(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast.
 			DontOverride: false,
 			FileName:     "generate.go",
 			Dir:          targetDir,
-			Writer:       fmtwriter.New(generatorGen, true, true),
+			Writer:       generatorGen,
 		},
 		{
 			DontOverride: true,
 			FileName:     fmt.Sprintf("%s.go", componentNameLower),
 			Dir:          targetDir,
-			Writer:       fmtwriter.New(baseGen, true, true),
+			Writer:       baseGen,
 		},
 	}, nil
 }
@@ -155,6 +156,7 @@ func TrailFiles(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast
 
 	generatorGen := gen.Block(
 		gen.SourceText(
+			"generator.bundle",
 			string(data.Must("pack-bundle.gen")),
 			struct {
 				Name          string
@@ -178,6 +180,7 @@ func TrailFiles(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast
 			gen.Block(
 				gen.Text("\n"),
 				gen.SourceText(
+					"generator.bundle",
 					string(data.Must("bundle-standin.gen")),
 					nil,
 				),
@@ -201,19 +204,19 @@ func TrailFiles(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pk ast
 			DontOverride: false,
 			FileName:     "bundle.go",
 			Dir:          targetDir,
-			Writer:       fmtwriter.New(pipeGen, true, true),
+			Writer:       pipeGen,
 		},
 		{
 			DontOverride: false,
 			FileName:     "generate.go",
 			Dir:          targetDir,
-			Writer:       fmtwriter.New(generatorGen, true, true),
+			Writer:       generatorGen,
 		},
 		{
 			DontOverride: true,
 			FileName:     fmt.Sprintf("%s.go", componentNameLower),
 			Dir:          targetDir,
-			Writer:       fmtwriter.New(baseGen, true, true),
+			Writer:       baseGen,
 		},
 	}, nil
 }

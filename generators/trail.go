@@ -11,8 +11,6 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/influx6/faux/fmtwriter"
-
 	"github.com/gokit/assetkit/generators/data"
 	"github.com/influx6/moz/ast"
 	"github.com/influx6/moz/gen"
@@ -64,6 +62,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		gen.Package(
 			gen.Name(componentNameLower),
 			gen.SourceText(
+				"trail.generator",
 				string(data.Must("bundle-standin.gen")),
 				struct {
 					Name    string
@@ -78,6 +77,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 
 	publicGen := gen.Block(
 		gen.SourceText(
+			"trail.generator",
 			string(data.Must("pack-bundle.gen")),
 			struct {
 				Name          string
@@ -99,15 +99,17 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 
 	lessGen := gen.Block(
 		gen.SourceText(
+			"trail.generator",
 			string(data.Must("main.less.gen")),
 			struct{}{},
 		),
 	)
 
-	jsGen := gen.Block(gen.SourceText(string(data.Must("jquery.min.js.gen")), struct{}{}))
+	jsGen := gen.Block(gen.SourceText("jquery.min",string(data.Must("jquery.min.js.gen")), struct{}{}))
 
 	tomlGen := gen.Block(
 		gen.SourceText(
+			"trail.generator",
 			string(data.Must("settings.toml.gen")),
 			struct {
 				Name    string
@@ -216,13 +218,13 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 			DontOverride: false,
 			Dir:          targetDir,
 			FileName:     "generate.go",
-			Writer:       fmtwriter.New(publicGen, true, true),
+			Writer:       publicGen,
 		},
 		{
 			DontOverride: false,
 			Dir:          targetDir,
 			FileName:     "bundle.go",
-			Writer:       fmtwriter.New(publicStandInGen, true, true),
+			Writer:       publicStandInGen,
 		},
 	}
 

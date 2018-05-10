@@ -15,7 +15,7 @@ func main() {
 		ShortDesc: "Generates bundling for public files",
 		Desc:      "Generates asset bundling for standard public static files",
 		Action: func(ctx flags.Context) error {
-			force, _ := ctx.GetBool("force")
+			force := ctx.GetBool("force")
 
 			name := flag.Arg(1)
 
@@ -47,7 +47,7 @@ func main() {
 			ShortDesc: "Generates bundling with a html file",
 			Desc:      "Generates asset bundling isolated view package",
 			Action: func(ctx flags.Context) error {
-				force, _ := ctx.GetBool("force")
+				force := ctx.GetBool("force")
 
 				name := flag.Arg(1)
 
@@ -79,7 +79,7 @@ func main() {
 			Desc:      "Generates bundling for general static files",
 			ShortDesc: "Generates bundling general use case static files",
 			Action: func(ctx flags.Context) error {
-				force, _ := ctx.GetBool("force")
+				force := ctx.GetBool("force")
 				name := flag.Arg(1)
 
 				currentdir, err := os.Getwd()

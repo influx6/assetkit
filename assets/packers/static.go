@@ -10,8 +10,7 @@ import (
 
 	"github.com/gokit/assetkit/assets"
 	"github.com/gokit/assetkit/generators/data"
-	"github.com/gu-io/gu/trees"
-	"github.com/influx6/faux/fmtwriter"
+	"github.com/gu-io/trees"
 	"github.com/influx6/moz/gen"
 )
 
@@ -54,8 +53,9 @@ func (static StaticMarkupPacker) Pack(statements []assets.FileStatement, dir ass
 				FileName:    filepath.Base(static.DestinationFile),
 				DirName:     filepath.Dir(static.DestinationFile),
 			},
-			Writer: fmtwriter.New(gen.Block(
+			Writer: gen.Block(
 				gen.SourceText(
+					"trees",
 					string(data.Must("trees.gen")),
 					struct {
 						Trees   map[string]string
@@ -65,7 +65,7 @@ func (static StaticMarkupPacker) Pack(statements []assets.FileStatement, dir ass
 						Package: static.PackageName,
 					},
 				),
-			), true, true),
+			),
 			OriginPath:    static.DestinationFile,
 			OriginAbsPath: static.DestinationFile,
 		},
