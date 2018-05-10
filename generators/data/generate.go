@@ -73,7 +73,7 @@ func main() {
 			gen.Constructor(),
 			gen.Returns(),
 			gen.Block(
-				gen.SourceText(`
+				gen.SourceText("files",`
                 {{range $key, $value := .Files}}
 								files[{{quote $key}}] = []byte("{{$value}}")
 							{{end}}

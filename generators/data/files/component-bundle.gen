@@ -5,6 +5,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"io"
 
 	"github.com/gokit/assetkit/assets"
 	"github.com/influx6/moz/gen"

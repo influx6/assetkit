@@ -5,7 +5,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"bytes"
+	"io"
 	"path/filepath"
 	"flag"
 	"log"
@@ -14,7 +14,6 @@ import (
 	"github.com/gokit/assetkit/assets"
 	"github.com/gokit/assetkit/assets/packers"
 	"github.com/influx6/moz/gen"
-	"github.com/BurntSushi/toml"
 )
 
 var (

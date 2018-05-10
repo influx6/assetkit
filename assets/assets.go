@@ -161,6 +161,7 @@ func (w *Webpack) Compile(dir string, doGoSources bool) (io.WriterTo, map[string
 
 	content := gen.Block(
 		gen.SourceTextWith(
+			"packer",
 			string(data.Must("pack-bundle-src.gen")),
 			template.FuncMap{},
 			struct {
