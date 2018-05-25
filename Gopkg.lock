@@ -61,7 +61,7 @@
     "utils",
     "vfiles"
   ]
-  revision = "cd225fdc444828ba27414911549b34db06b0abc4"
+  revision = "6662a2ca657cbb52eac3fb49b0ec2ea7de2613d5"
 
 [[projects]]
   branch = "master"
@@ -81,7 +81,7 @@
     "gen/templates",
     "utils"
   ]
-  revision = "a71c661a48a2b716c04767e1a6b196baba8a6334"
+  revision = "f56c8a0aadacb9214374dd1b9ee38d9015c2f8fe"
 
 [[projects]]
   branch = "master"

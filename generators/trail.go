@@ -105,7 +105,7 @@ func TrailPackages(an ast.AnnotationDeclaration, pkg ast.PackageDeclaration, pkg
 		),
 	)
 
-	jsGen := gen.Block(gen.SourceText("jquery.min",string(data.Must("jquery.min.js.gen")), struct{}{}))
+	jsGen := gen.Block(gen.SourceText("jquery.min", string(data.Must("jquery.min.js.gen")), struct{}{}))
 
 	tomlGen := gen.Block(
 		gen.SourceText(
