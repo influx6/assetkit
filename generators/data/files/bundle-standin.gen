@@ -89,14 +89,25 @@ func MustFindFileReader(path string) (*bytes.Reader, int64){
 	return reader, size
 }
 
-// FindFileReader returns a io.Reader by seeking the giving file path if it exists.
-func FindFileReader(path string) (*bytes.Reader, int64, error){
+var noFile FileData
+
+// GetFileMeta returns a associated file meta for path if found.
+func GetFileMeta(path string) (FileData, error) {
   item, ok := assetFiles[path]
   if !ok {
-    return nil,0, fmt.Errorf("File %q not found in file system", path)
+    return noFile, fmt.Errorf("File %q not found in file system", path)
+  }
+  return item, nil
+}
+
+// FindFileReader returns a io.Reader by seeking the giving file path if it exists.
+func FindFileReader(path string) (*bytes.Reader, int64, error){
+  item, err := GetFileMeta(path)
+  if err != nil {
+    return nil,0, err
   }
 
-  return bytes.NewReader(item.data), int64(len(item.data)), nil
+  return bytes.NewReader(item.Data), int64(len(item.Data)), nil
 }
 
 // MustReadFile calls ReadFile to retrieve file content with path else panics.

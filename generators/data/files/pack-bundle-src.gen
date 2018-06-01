@@ -6,10 +6,11 @@ import (
 	"io"
 )
 
-type fileData struct{
-  path string
-  root string
-  data []byte
+// FileData defines a compressed/uncompressed packed file.
+type FileData struct{
+  Path string
+  Root string
+  Data []byte
 }
 
 var (
@@ -23,13 +24,13 @@ var (
     {{ end }}
   }
 
-  assetFiles = map[string]fileData{
+  assetFiles = map[string]FileData{
     {{ range $ext, $directives := .Directives }}
       {{ range $directives }}
         {{quote .OriginPath}}: { // all {{ $ext }} assets.
-          data: []byte("{{.Read }}"),
-          path: {{quote .OriginPath }},
-          root: {{quote .OriginAbsPath }},
+          Data: []byte("{{.Read }}"),
+          Path: {{quote .OriginPath }},
+          Root: {{quote .OriginAbsPath }},
         },
       {{ end }}
     {{ end}}
@@ -108,14 +109,25 @@ func MustFindFileReader(path string) (*bytes.Reader, int64){
 	return reader, size
 }
 
-// FindFileReader returns a io.Reader by seeking the giving file path if it exists.
-func FindFileReader(path string) (*bytes.Reader, int64, error){
+var noFile FileData
+
+// GetFileMeta returns a associated file meta for path if found.
+func GetFileMeta(path string) (FileData, error) {
   item, ok := assetFiles[path]
   if !ok {
-    return nil,0, fmt.Errorf("File %q not found in file system", path)
+    return noFile, fmt.Errorf("File %q not found in file system", path)
+  }
+  return item, nil
+}
+
+// FindFileReader returns a io.Reader by seeking the giving file path if it exists.
+func FindFileReader(path string) (*bytes.Reader, int64, error){
+  item, err := GetFileMeta(path)
+  if err != nil {
+    return nil,0, err
   }
 
-  return bytes.NewReader(item.data), int64(len(item.data)), nil
+  return bytes.NewReader(item.Data), int64(len(item.Data)), nil
 }
 
 // MustReadFile calls ReadFile to retrieve file content with path else panics.
